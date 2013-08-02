@@ -1,0 +1,15 @@
+
+# Need to tell git to ignore its ignore file -
+# But go ahead and commit it, so other team members get the same results.
+.gitignore
+
+# auto-created mac file
+.DS_Store
+
+# vim created files
+*~
+*.swp
+
+# Intellij created files
+.idea
+spawnwatcher.iml
