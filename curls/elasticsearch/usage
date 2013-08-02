@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#| A standard (but extensible) 'usage' printer function, used by all other scripts.
+# To add to the base info, invoke with one or more parameter pairs:
+# usage "syntax to add to usage line" "explanation"
+# ex: usage "[-k <keep>]" "keep - the number to keep" "-l [<list>]" "list - list something"
+
+usage()
+{
+  lf2sp="
+  "  # a linefeed and two spaces.  Done here now for later readability and indenting.
+
+  uline="Usage:   $0 -h <host> [-p <port>]"
+  elines="
+  host - the elasticsearch host name (dns-resolvable) or ip
+  port - the elasticsearch port (defaults to 9200)"
+
+  i=0
+  for param
+  do
+    i=$((i+1))
+    if [ $((i % 2)) = 0 ]
+    then
+      elines=$elines$lf2sp$param
+    else
+      uline=$uline" "$param
+    fi
+  done
+
+  echo
+  echo $uline
+
+cat << EOF
+  $elines
+
+  If you want to run these 'curl' scripts without having to always
+  enter the parameters, put them into the 'config' file.
+
+EOF
+}

@@ -1,0 +1,77 @@
+#!/bin/bash
+
+, which by default was an analyzed field.
+An initial problem was that it would tokenize the field and break on dashes (and some 
+other characters as well).  Therefore a host such as 'vm0-hiss1' would be counted
+as two records - 'vm0' and 'hiss1'. 
+  So - a mapping was developed and applied (see 'putmap' and 'set_template'), to 
+    make 'hostname' into a field that is not analyzed.
+
+'putmap' is a way to put a new mapping onto all current indexes.
+
+fix these comments, make script use the source functions.
+
+
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#-- Change the default index mapping
+#---------------------------------------------------------------------------
+curl -XPUT 'vm0-sfw1:9200/_all/syslog/_mapping' -d ' {
+  "syslog" : {
+     "properties" : {
+        "@fields" : {
+           "properties" : {
+              "hostname" : {
+                 "type": "multi_field",
+		 "fields": {
+                    "na_hostname" : { "type" : "string", 
+		               "index" : "not_analyzed" }
+                 }
+              }
+           }
+        }
+     }
+  }
+}'
+
+curl -XPUT 'vm0-sfw1:9200/_all/dc720/_mapping' -d ' {
+  "dc720" : {
+     "properties" : {
+        "@fields" : {
+           "properties" : {
+              "hostname" : {
+                 "type": "multi_field",
+		 "fields": {
+                    "na_hostname" : { "type" : "string", 
+		               "index" : "not_analyzed" }
+                 }
+              }
+           }
+        }
+     }
+  }
+}'
+
+curl -XPUT 'vm0-sfw1:9200/_all/cloud/_mapping' -d ' {
+  "cloud" : {
+     "properties" : {
+        "@fields" : {
+           "properties" : {
+              "hostname" : {
+                 "type": "multi_field",
+		 "fields": {
+                    "na_hostname" : { "type" : "string", 
+		               "index" : "not_analyzed" }
+                 }
+              }
+           }
+        }
+     }
+  }
+}'
+
+
+

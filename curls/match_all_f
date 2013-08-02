@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo
+echo
+
+curl -XPOST 'st1-sfw1:9200/_search?pretty=true' -d '
+{
+	"filter" : {
+		"match_all" : { }
+ 	},
+	"sort" : 
+		[ {"@timestamp" : {"order" : "desc", "missing" : "_last"} } ],
+
+	"size" : 2
+}'
+
+

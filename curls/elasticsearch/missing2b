@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#  missing2b - Example of a filtered search 
+#---------------------------------------------------------------------------
+# Learning from the flawed logic in 'missing2a', this filtered query
+# has both correct syntax and good logic by filtering on one field
+# and then querying the filtered results on a different field.  However, 
+# it would not support the intended usage of the 'unknown' choice in the 
+# activity log 'levels' dropdown menu, because we need the 'missing'
+# case to be combinable with records that have a specific severity value.
+
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d ' {
+	"filter" : {
+            "missing" : { "field" : "severity" }
+        },
+	"query" : {
+		"terms" : { "hostname" : [ 
+			"vm0-hiss1", 
+			"vm0-mfw1" 
+		] }
+	},
+	"size" : 1
+}'
+
+

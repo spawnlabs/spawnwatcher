@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo
+echo -n "Installing a compression template...  "
+
+curl -XPUT 'http://vm0-sfw1:9200/_template/template_logstash/' -d ' {
+    "template": "logstash*",
+    "mappings": {
+        "_default_": { "_source": { "compress": "true" } }
+    }
+} '
+
+echo "    done."
+
+

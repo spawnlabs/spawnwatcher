@@ -1,0 +1,38 @@
+#!/bin/bash 
+#| List the elasticsearch indexes on a given server.
+# The indices are created by logstash; one per day.
+
+pushd `dirname $0` > /dev/null
+source usage
+source options; options $*
+result=$?
+popd > /dev/null
+
+if [ "$result" != "0" ]
+then
+  # We did not pass the basic parameter validation. 
+  usage
+  exit 1
+fi
+
+echo
+
+# The $ehost may start with "http://" but it is not needed.
+elastic="$ehost:$eport"
+
+ilist=`curl -s -XGET "$elastic/_mapping?pretty=true" | grep logstash | cut -f1 -d':' | sort`
+
+for aline in $ilist;
+do
+    anindex=`echo $aline | cut -f2 -d '"'`  # trim off the double quotes.
+    echo "$anindex";
+done
+
+echo
+
+icount=`curl -s -XGET "$elastic/_mapping?pretty=true" | grep logstash | wc -l`
+echo "Current index count: $icount"
+
+echo
+
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo
+echo
+
+curl -s -XGET 'st1-sfw1:9200/logstash-2013.01.15/_status?pretty=true'
+

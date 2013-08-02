@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Testing the log/file endpoint of the spawnd LogServlet.
+
+# Requires spawnd to be running / responding.  (can do this with intellij)
+
+# Requires logstash to be running / responding. (command-line)
+# (the configuration can be set to send to the 'staging' redis) 
+# /usr/bin/java -jar /users/dchastai/downloads/logstash-1.1.9-monolithic.jar agent -f /users/dchastai/downloads/logstash.conf
+
+
+# Clear the previous run -
+echo
+#curl -s -XDELETE http://st1-sfw1:9200/logstash-2013.01.14
+echo
+
+# A spawn_tcp message looks like:
+# timestamp:client_type:priority:user_id:play_id:game_id:gamestick_id:gamenode_id:message
+
+# timestamp format: MMM dd HH:mm:ss.SSSZ
+line1="Jan 14 15:47:47.001Z:test:TEST:user_id001:play_id001::::This is TEST message 1" 
+line2="Jan 14 15:48:42.001Z:test:TEST:user_id001:play_id001::::This is TEST message 2" 
+line3="Jan 14 15:49:38.001Z:test:TEST:user_id001:play_id001::::This is TEST message 3" 
+line4="Jan 14 15:50:33.001Z:test:TEST:user_id001:play_id001::::This is TEST message 4" 
+line5="Jan 14 15:51:28.001Z:test:TEST:user_id001:play_id001::::This is TEST message 5" 
+
+# Make the data file -
+rm -f atestfile.txt
+echo $line1 > atestfile.txt 
+echo $line2 >> atestfile.txt 
+echo $line3 >> atestfile.txt 
+echo $line4 >> atestfile.txt 
+echo $line5 >> atestfile.txt 
+
+# See the man page for curl, with the -F (submit a Form) flag.
+
+# Note: the command below does NOT use the file that we just created;
+# It 'hopes' that the test file created by the spawnd api test code
+# has been copied into /tmp with the correct name, for this usage.
+
+curl -X POST \
+     -F "file=@/tmp/atestfile.txt" \
+     -H "Accept: application/json" \
+     -H "logstash-host:localhost" \
+     -H "logstash-tcp-plugin-port:9888" \
+     http://api.spawnlabs.com:8080/log/file
+
+
+

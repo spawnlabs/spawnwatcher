@@ -1,0 +1,11 @@
+Tests for input variation behaviors:
+Using some 'known' scripts, to test the 'usage' and 'options' functions.
+  (interpret '<good>' to mean good input should be provided  )
+
+levels	(No options) 	usage, for missing host
+levels	 -h <good> 	correct operation
+levels	 -?			usage only, no specific complaint
+trim_indices -h <good> -a -c    usage for missing -k option (a,c not known, ignored)
+trim_indices -h <good> -ac      usage for missing -k option (a,c not known, ignored)
+
+

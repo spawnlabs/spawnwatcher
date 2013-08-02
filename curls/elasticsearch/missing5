@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+# missing5
+#
+# Example of a search for a combination of:
+#   1.  All records that are missing the 'severity' field.  (9416699)
+#   2.  Any record where 'hostname' matches the spec (167)
+#   Total result count was:  9416866 (correct)
+#---------------------------------------------------------------------------
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d '{
+   "filter" : {
+      "bool" : {
+	  "should" :  {
+             "missing" : { 
+               	"field" : "severity",
+	        "existence" : true,
+	        "null_value" : true
+	     }
+          },
+          "should" : {
+            "terms" : { "hostname" : [ "vm0-hiss1", "vm1-hiss1" ] } 
+          }
+      }
+   },
+   "size" : 1
+}'
+
+

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Testing the playstop endpoint of the spawnd PlaysServlet
+# to add a play stop reason 
+
+curl -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -X POST 'localhost:8080/plays/043/playstop' -d ' {
+	"reason" : "999" }'
+
+
+# Correct output from the first run:  nothing.
+# Correct output from subsequent runs:  complaint that 043 already has a stop reason.
+
+

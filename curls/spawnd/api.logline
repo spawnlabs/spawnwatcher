@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# This is a POST to a spawnd REST API service
+# Requires spawnd to be running / responding (on localhost).
+# Requires logstash-shipper to be running / responding (on st1-netman1).
+# and not just ANY logstash-shipper; it has to be on a system that also
+# has an indexer.  The network paths must be accessible to this host.
+
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -H "logstash-host:st1-netman1" \
+     -H "logstash-tcp-plugin-port:9888" \
+     -d '{
+        "timestamp" : "Jun 04 15:17:12.345Z",
+        "message" : "The log message from curl on sbox1",
+        "priority" : "NOTONE"
+    }' \
+    http://st1-sfw1:8080/log/line
+

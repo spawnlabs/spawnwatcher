@@ -1,0 +1,24 @@
+This directory contains scripts that were used in the development of the Activity Log.
+Any / all Activity Log interaction with elasticsearch can also be done with a 'curl' command,
+and commands were developed / tested here first, before converting to json/ruby and combining
+the pieces in order to send the constructed request thru the RestClient in the common_controller.
+
+The request that is sent out by the controller may be seen in the rails console or log.  As for
+the result, the controller parses it in to a json object and takes only the fields that it
+cares about.  With these curl scripts, you will see the full json response.
+
+If you need to understand what Activity Log is doing for a given operation, it may be helpful to
+review / run the corresponding curl script first.
+
+If you need to add new elasticsearch queries to manage-web, you can develop (and preserve) the
+corresponding curl(s) here first, if needed.
+
+For a quick one-line explanation of the scripts here, run the 'describe' script.
+
+
+
+
+
+
+
+

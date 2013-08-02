@@ -1,0 +1,36 @@
+#!/bin/bash
+
+echo
+echo
+
+curl -XPUT vm0-sfw1:9200/_template/template_spawn -d ' {
+	"template" : "logstash*",
+	"mappings" : {
+           "syslog" : {
+              "properties" : {
+                 "@fields" : {
+                    "properties" : {
+                       "hostname" : {
+                          "type": "string",
+		          "index" : "not_analyzed" 
+                       }
+                    }
+                 }
+              }
+           },
+           "cloud" : {
+              "properties" : {
+                 "@fields" : {
+                    "properties" : {
+                       "hostname" : {
+                          "type": "string",
+		          "index" : "not_analyzed" 
+                       }
+                    }
+                 }
+              }
+           }
+	}
+}
+'
+

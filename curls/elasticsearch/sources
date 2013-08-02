@@ -1,0 +1,48 @@
+#!/bin/bash
+#| Faceted search to get each distinct @source_host (along with a count)
+
+# The name corresponds to the Activity Log dropdown menu label.  
+# The results are used to populate the menu selection choices.
+
+# -----------------------------------------
+# Setup, common to all scripts here
+# -----------------------------------------
+pushd `dirname $0` > /dev/null
+source usage
+source options; options $*
+result=$?
+popd > /dev/null
+
+if [ "$result" != "0" ]
+then
+  # We did not pass the basic parameter validation.
+  usage
+  exit 1
+fi
+# -----------------------------------------
+
+#---------------------------------------------------------------------------
+echo
+echo
+
+# Search all indices, with a specific mapping type -
+#curl -XPOST 'vm0-sfw1:9200/_all/cloud/_search?pretty=true' -d ' {
+
+# All indices, all mapping types
+#curl -XPOST 'vm0-sfw1:9200/_all/_search?pretty=true' -d ' {
+
+# All indices, all mapping types (same as above, shorter since '_all' is a default)) -
+curl -XPOST "$elastic/_search?pretty=true" -d ' {
+    "query" : { "match_all" : { } },
+    "facets" : {
+       "myfacet_name" : { "terms" : {
+       		"field": "@source_host",
+		"order": "term",
+		"size": 80	}
+       }
+    },
+    "size":1
+}'
+echo
+echo
+

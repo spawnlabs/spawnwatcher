@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#-- Example of a search for records that are missing the 'severity' field.
+#  Defined as a 'filter'.
+#---------------------------------------------------------------------------
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d '{
+   "filter" : {
+      "missing" : { 
+         "field" : "severity",
+	 "existence" : true,
+	 "null_value" : true
+      }
+   },
+   "size" : 1
+}'
+
+

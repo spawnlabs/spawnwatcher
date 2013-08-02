@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#-- 'missing3' -  A search for records that are missing the 'severity' field.
+#
+#  Defined as a 'filter' with a 'bool'.
+#  No need to do it this way as opposed to the syntax in 'missing1', except 
+#    that this is an intermediate step towards the development of a compound 
+#    query, to mix specific 'known' severities with the 'missing'.
+#---------------------------------------------------------------------------
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d '{
+   "filter" : {
+      "bool" : {
+         "should" :  {
+            "missing" : { 
+               "field" : "severity",
+	       "existence" : true,
+	       "null_value" : true
+	    }
+         } 
+      } 
+   },
+   "size" : 1
+}'
+
+

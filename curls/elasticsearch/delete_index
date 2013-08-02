@@ -1,0 +1,30 @@
+#!/bin/bash
+#| Utility to individually delete indexes.
+
+# Usage:   echo <a list of indexes> | $0
+#   you can get the list from doing an 'ls -1' on the
+#   indices directory, on the host where the files are:
+#   ls -1 /var/lib/elasticsearch/data/elasticsearch/nodes/0/indices
+#   But that will get ALL of them; if you really want that, just do
+#   the single curl that does that.  So - either customize your ls
+#   with the proper wildcard(s), or choose carefully from the full
+#   list of index names.
+
+echo
+
+while read aline
+do
+  if [ "$aline" == "" ]; then  # If the input is empty
+    if [[ -t 0 ]]; then  # If stdin is coming from a terminal, end.
+      break
+    fi
+  else
+    echo -n "curl -XDELETE http://<elasticsearch host>:9200/$aline  "
+    curl -XDELETE http://st1-sfw1:9200/$aline
+    echo
+  fi
+done
+
+
+echo
+

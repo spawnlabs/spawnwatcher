@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo
+echo
+
+curl -XPUT st1-sfw1:9200/_template/template_spawn -d ' {
+  "template" : "logstash*",
+    "settings" : {
+      "number_of_shards" : 1,
+      "number_of_replicas" : 0
+    },
+    "mappings" : {
+           "_default_" : {
+            "properties" : {
+                "@source_host" : { "type" : "string", "index" : "not_analyzed" }
+             }
+           }
+    }
+}
+'
+

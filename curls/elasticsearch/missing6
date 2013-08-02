@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+# Example of a search for specific hosts and severities, combined
+#   with either a specific severity or severity missing altogether.
+# Simplified boolean expression: 
+#   (in <x> time range) AND (having <x> hostname) AND
+#     (having <x> severity OR severity missing)
+#
+# In the course of this research, have learned that the AND/OR logic
+# is more performant than the 'bool' filter, and that a filter is
+# better for our purposes than a query, since a filter is faster
+# because there is no scoring and caching is automatic.
+# (http://www.elasticsearch.org/guide/reference/query-dsl)
+#---------------------------------------------------------------------------
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d '
+{
+   "filter" : {
+      "and" : [
+         {
+            "range" : { 
+               "@timestamp" : { 
+                  "from" : "2012-07-11T01:12:00Z",
+                  "to" : "2012-07-11T10:12:01Z"
+               }
+            }
+         },
+         {
+            "terms" : { 
+               "hostname" : [   
+                  "vm0-hiss1",
+                  "vm0-mfw1"
+               ] 
+            }
+         },
+         {
+            "or" : [
+               {
+                  "missing" : { 
+                     "field" : "severity",
+	             "existence" : true,
+	             "null_value" : true
+	          }
+
+               },
+               {
+                  "terms" : { 
+                     "severity" : [   
+                        "debug"
+                     ] 
+                  }
+               }
+            ]    
+         }
+      ]
+
+   },
+   "size" : 1
+}'
+
+

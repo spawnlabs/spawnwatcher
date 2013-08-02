@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Testing the /config endpoint of the spawnd GamenodesServlet.
+
+# Requires spawnd to be running / responding.  (can do this with intellij)
+
+curl -X GET \
+     http://localhost:8080/gamenodes/26F50bc36d13/mpu/config
+
+
+

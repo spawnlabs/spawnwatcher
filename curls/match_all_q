@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo
+echo
+
+curl -XPOST 'st1-sfw1:9200/_search?pretty=true' -d '
+{
+	"query" : {
+		"match_all" : { }
+ 	},
+	"size" : 2
+}'
+
+

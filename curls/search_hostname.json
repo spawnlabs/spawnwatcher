@@ -1,0 +1,11 @@
+{
+	"query" : {
+		"terms" : { "hostname" : [ 
+			"vm0-hiss1", 
+			"vm0-mfw1" 
+		] }
+	},
+	"size" : 2
+}
+
+

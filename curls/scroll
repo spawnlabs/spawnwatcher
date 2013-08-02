@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#-- Example of a scrolled search
+#
+# does not support sorting!
+#---------------------------------------------------------------------------
+
+curl -XPOST 'vm0-sfw1:9200/_search?scroll=10m&pretty=true' -d ' {
+	"query" : {
+		"terms" : { "hostname" : [ 
+			"vm0-hiss1", 
+			"vm0-mfw1" 
+		] }
+	},
+	"size" : 2
+}'
+
+# After this, you would begin to scroll thru the results, with a command like:
+
+#curl -XPOST 'vm0-sfw1:9200/_search/scroll?scroll=10m&scroll_id=c2Nhbjs3OzExMDYzOlZva003Q0RkUjRlNGZIZkNacVZ3bVE7MTEwNjY6Vm9rTTdDRGRSNGU0ZkhmQ1pxVndtUTsxMTA2ODpWb2tNN0NEZFI0ZTRmSGZDWnFWd21ROzExMDY0OlZva003Q0RkUjRlNGZIZkNacVZ3bVE7MTEwNjI6Vm9rTTdDRGRSNGU0ZkhmQ1pxVndtUTsxMTA2NzpWb2tNN0NEZFI0ZTRmSGZDWnFWd21ROzExMDY1OlZva003Q0RkUjRlNGZIZkNacVZ3bVE7MTt0b3RhbF9oaXRzOjI4ODI4NjA7&pretty=true'
+
+# but replace the scroll id with the current one that you get from the result of the first command.
+
+# To send the scroll id in the body of the query instead of part of the uri, just send the
+# string id only; no label, not as a hash/JSON, and no other params.
+
+# The size of the response will be the specified size TIMES the number of active shards.
+
+# The inability to support a sort makes this search type undesirable for use in manage-web.
+
+

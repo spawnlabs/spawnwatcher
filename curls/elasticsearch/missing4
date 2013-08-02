@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#-- 'missing4' - a query with a 'bool' clause; refining the syntax before
+#    combining it with 'missing3'.  This could just as easily be a filter.
+#---------------------------------------------------------------------------
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d '{
+   "query" : {
+      "bool" : {
+         "should" : {
+            "terms" : { "hostname" : [ "vm0-hiss1", "vm1-hiss1" ] } 
+         }
+      }
+	
+   }, 
+   "size" : 1
+}'
+
+

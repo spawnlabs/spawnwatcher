@@ -1,0 +1,55 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#-- Change the default index mapping
+#---------------------------------------------------------------------------
+curl -XPUT 'vm0-sfw1:9200/_all/syslog/_mapping' -d ' {
+  "syslog" : {
+     "properties" : {
+        "@fields" : {
+           "properties" : {
+              "hostname" : {
+                 "type": "string",
+		 "index" : "not_analyzed" 
+              }
+           }
+        }
+     }
+  }
+}'
+
+curl -XPUT 'vm0-sfw1:9200/_all/cloud-tnsm/_mapping' -d ' {
+  "cloud-tnsm" : {
+     "properties" : {
+        "@fields" : {
+           "properties" : {
+              "hostname" : {
+                 "type": "string",
+		 "index" : "not_analyzed"
+              }
+           }
+        }
+     }
+  }
+}'
+
+curl -XPUT 'vm0-sfw1:9200/_all/cloud/_mapping' -d ' {
+  "cloud" : {
+     "properties" : {
+        "@fields" : {
+           "properties" : {
+              "hostname" : {
+                 "type": "string",
+		 "index" : "not_analyzed"
+              }
+           }
+        }
+     }
+  }
+}'
+
+
+

@@ -1,0 +1,77 @@
+#!/bin/bash
+#| Utility to delete all but the last 'n' elasticsearch indexes.
+
+# These indices were created by logstash; one per day.
+
+# -----------------------------------------
+# Setup, common to all scripts here
+# -----------------------------------------
+pushd `dirname $0` > /dev/null
+source usage
+source options; options $*
+result=$?
+popd > /dev/null
+
+if [ "$result" != "0" ]
+then
+  # We did not pass the basic parameter validation.
+  usage
+  exit 1
+fi
+# -----------------------------------------
+
+# A second parse of the options, to pick up one that only this script needs.
+
+# Taking the 'permissive' options specifier from the 'options' function, 
+#   but adding an argument to the 'k' option:
+allowed_options="h:p:abcedefgijk:lmnoqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+# And for the 'handling' portion - we only need to deal with our 'new' one.
+OPTIND=1  # Move the option parser pointer back to the starting position.
+while getopts $allowed_options OPTION
+do
+    # echo "OPTION was: [$OPTION]"
+    case $OPTION in
+        k)
+            tokeep=$OPTARG
+            ;;
+    esac
+done
+
+# Get the number of days to keep.
+if [[ -z "$tokeep" ]]; then
+    echo
+    echo "Required parameter 'days to keep' was not provided!"
+    usage "[-k <keep>]" "keep - the number of days (indices) to keep"
+    exit 2
+fi
+
+echo
+
+# The $ehost may start with "http://" but it is not needed.
+elastic="$ehost:$eport"
+
+icount=`curl -s -XGET "$elastic/_mapping?pretty=true" | grep logstash | wc -l`
+echo "Current index count: $icount"
+
+toremove=$((icount-$tokeep))
+
+if [[ $toremove > 0 ]]; then
+    echo "  removing $toremove"
+else
+    echo "nothing to do"
+    exit 0
+fi
+
+ilist=`curl -s -XGET "$elastic/_mapping?pretty=true" | grep logstash | cut -f1 -d':' | sort | head -$toremove`
+
+for aline in $ilist;
+do
+    anindex=`echo $aline | cut -f2 -d '"'`  # trim off the double quotes.
+    echo -n "Removing $anindex ...  ";
+    curl -XDELETE "$elastic/$anindex"
+    echo "   Done."
+done
+
+echo
+

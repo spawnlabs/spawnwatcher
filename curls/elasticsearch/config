@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+#| A function that provides a way to pre-specify command options.
+# The normal operation of the curl scripts when you invoke
+# them without parameters is to emit the 'usage' text.
+#
+# This function gives you a way to provide parameters to the
+# curl scripts without having to enter them on the command line.
+#
+# params for all curl scripts can go here; only the ones that are
+# 'needed' will be seen / retrieved.
+#
+# Command-line params, if provided, will override any values set here.
+#
+# add/remove/modify lines below as needed.
+#
+
+config()
+{
+  ehost="st1-elasticsearch"
+  eport="9200"
+  #tokeep=100
+}
+

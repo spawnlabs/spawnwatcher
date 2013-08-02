@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#  missing2a - Example of a filtered search 
+#---------------------------------------------------------------------------
+# The goal was to get both the results from a search for specific values in 
+# a field, with the results from a search where that field was not populated 
+# at all.  The syntax is correct but the logic is flawed - the filter only 
+# lets thru the records that are missing a value in that field, so the query 
+# of those results yields nothing.
+
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d ' {
+	"filter" : {
+            "missing" : { "field" : "severity" }
+        },
+	"query" : {
+		"terms" : { "severity" : [ 
+			"debug", 
+			"info" 
+		] }
+	},
+	"size" : 2
+}'
+
+

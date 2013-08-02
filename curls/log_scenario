@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# Setup logs/kibana for a specific scenario -
+# Requires spawnd to be running / responding.  (can do this with intellij)
+# Requires logstash to be running / responding. (command-line)
+
+# The 'staging' logstash / tcp port cannot be accessed from a dev system
+#  (as of this writing, that is). 
+# To work around, run your own logstash-shipper (hence the 'localhost' refs below)
+# and it will still ship to the 'staging' redis, which IS accessible.
+
+# (the configuration can be set to send to the 'staging' redis) 
+# /usr/bin/java -jar /users/dchastai/downloads/logstash-1.1.4-monolithic.jar agent -f /users/dchastai/downloads/logstash.conf
+
+
+# Clear the previous run -
+echo
+curl -XDELETE http://st1-sfw1:9200/logstash-2013.01.17
+echo
+
+# SYSLOG timestamp format: MMM dd HH:mm:ss.SSS
+
+# One 'post' per line -
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -H "logstash-host:localhost" \
+     -H "logstash-tcp-plugin-port:9888" \
+     -d '{
+ 	"timestamp" : "Jan 17 15:47:47.001Z",
+	"client_type" : "scenario",
+	"message" : "User login: Mike Rapp",
+	"priority" : "INDEWA"
+    }' \
+    http://localhost:8080/log/line 
+
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -H "logstash-host:localhost" \
+     -H "logstash-tcp-plugin-port:9888" \
+     -d '{
+ 	"timestamp" : "Jan 17 15:49:44.011Z",
+	"client_type" : "scenario",
+	"message" : "Session 094 started for User: Mike Rapp, Game: H____11777",
+	"priority" : "INDEWA"
+    }' \
+    http://localhost:8080/log/line 
+
+
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -H "logstash-host:localhost" \
+     -H "logstash-tcp-plugin-port:9888" \
+     -d '{
+ 	"timestamp" : "Jan 17 15:50:00.000Z",
+	"client_type" : "scenario",
+	"message" : "All heartbeats normal",
+	"priority" : "INDEWA"
+    }' \
+    http://localhost:8080/log/line 
+
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -H "logstash-host:localhost" \
+     -H "logstash-tcp-plugin-port:9888" \
+     -d '{
+ 	"timestamp" : "Jan 17 16:13:28.005Z",
+	"client_type" : "scenario",
+	"message" : "haproxy - failure of primary spawd server!  Switching to backup..",
+	"priority" : "INDEWA"
+    }' \
+    http://localhost:8080/log/line 
+
+
+curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Accept: application/json" \
+     -H "logstash-host:localhost" \
+     -H "logstash-tcp-plugin-port:9888" \
+     -d '{
+ 	"timestamp" : "Jan 17 16:13:29.123Z",
+	"client_type" : "scenario",
+	"message" : "MPU lost connection to client!  Stopping session, code 009",
+	"priority" : "INDEWA"
+    }' \
+    http://localhost:8080/log/line 
+
+
+
+

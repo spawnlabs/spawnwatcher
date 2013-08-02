@@ -1,0 +1,6 @@
+The 'missing' series (1 thru 6) was developed to work out the correct syntax needed
+to properly combine results from a search for specific values in a field, with the
+results from a search where that field was not populated at all.  The last one
+contains the desired result (along with other combinations).
+
+

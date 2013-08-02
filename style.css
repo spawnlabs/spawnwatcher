@@ -1,0 +1,16 @@
+a:visited{ color: blue; }
+
+#watcher_pic {
+    position: absolute;
+    top: 0px;
+    z-index: -1;
+}
+
+#after_image {
+    min-height: 100px;
+}
+
+.fl {
+    float: left;
+}
+

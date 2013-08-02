@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# This script is OBE - kept for now but DO NOT check in.
+
+# Possible future usage:  as example curl for uploading a file to a servlet
+# in spawnd.  See also the spawnd version of the perfdata servlet, before it
+# changed to the rabbitMQ implementation.
+# This file may be adaptable to upload files to the log/file endpoint;
+# hence the name.
+
+# Accessing the perfdata endpoint of the spawnd PlaysServlet.
+# Expects playsession data to already be in the db, and
+# the REST api of spawnd must be responsive (spawnd running).
+
+
+curl -X POST \
+     -F "file=@/Users/dchastai/workspace/manage-web/script/scenarios/atestfile.txt" \
+     -H "Accept: application/json" \
+     -H "format:plain" \
+     localhost:8080/plays/001/perfdata
+
+curl -X POST \
+     -F "file=@/Users/dchastai/workspace/manage-web/script/scenarios/atestfile.txt" \
+     -H "Accept: application/json" \
+     -H "format:plain" \
+     localhost:8080/plays/005/perfdata
+
+curl -X POST \
+     -F "file=@/Users/dchastai/workspace/manage-web/script/scenarios/atestfile.txt" \
+     -H "Accept: application/json" \
+     -H "format:plain" \
+     localhost:8080/plays/008/perfdata
+
+
+# Correct output from the first run:  nothing.
+# Correct output from subsequent runs:  complaint that the session already has perfdata.
+
+

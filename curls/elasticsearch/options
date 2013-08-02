@@ -1,0 +1,65 @@
+#!/bin/bash
+#
+# Input parameter extraction and validation
+#
+options()
+{
+  source config; config # Bring in pre-defined options, if any.
+
+  # This 'permissive' option recognizer will allow encapsulating scripts to later add
+  # their own, additional options.  But there are considerations:
+  #   This function will allow an unrecognized option with no arguments to be ignored,
+  #   but if a user enters an option that also has an unexpected argument, processing 
+  #   stops as soon as it hits that argument.  No error, but at that point control 
+  #   returns to the calling context and everything else that follows is effectively
+  #   dropped.  If there is logic in place in the calling context to (re-)handle the 
+  #   option with the extra argument and any subsequent options, then all may be 
+  #   working as intended.  The take-away: the order of provided options does matter;
+  #   all 'standard' options should be given first.  The usage statement hints at
+  #   this by showing the options in their preferred order, but it does not 
+  #   explicitly state that order matters.
+  #   
+  while getopts "h:p:abcedefgijklmnoqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ?" OPTION
+  do
+    #echo "OPTION was: [$OPTION]"
+    # It will be either one of the recognized, OR '?', not necessarily what you entered.
+    case $OPTION in
+        h)
+            ehost=$OPTARG
+            ;;
+        p)
+            eport=$OPTARG
+            ;;
+        \?)
+            # An actual question mark, not an 'unknown'.
+            # treating this as a request to see the usage statement.
+            return 1
+            ;;
+        ?)
+            # ignoring everything else.  '*)' is the same thing.
+            #echo "[$OPTION] was ignored"
+            ;;
+    esac
+  done
+
+  # Get the elasticsearch host.
+  # A curl host can be prefixed with 'http://' or 'https://', if needed.
+  if [[ -z "$ehost" ]]; then
+    echo
+    echo "Required parameter 'host' was not provided!"
+    return 1
+  fi
+
+  # Get the elasticsearch port.
+  if [[ -z "$eport" ]]; then
+    eport="9200"
+  fi
+
+  # Not a config setting by itself, but this composite is used in every
+  # curl script, so it is a definite convenience to define it once, here.
+  elastic="$ehost:$eport"
+
+}
+
+
+

@@ -1,0 +1,97 @@
+#!/bin/bash
+#| Get the activity log 'levels' dropdown selections
+
+# 'levels' is a search faceted on 'severity'.  The name corresponds to the Activity Log
+#  dropdown menu label.  The results are used to populate the menu selection choices.
+
+# Note 5/24/2013 - activity log has been removed.  This script remains as a helper to
+#  identify grok parsing problems (to see the non-standard / strange levels, if any)
+
+# -----------------------------------------
+# Setup, common to all scripts here
+# -----------------------------------------
+pushd `dirname $0` > /dev/null
+source usage
+source options; options $*
+result=$?
+popd > /dev/null
+
+if [ "$result" != "0" ]
+then
+  # We did not pass the basic parameter validation.
+  usage
+  exit 1
+fi
+# -----------------------------------------
+
+# This is not used; just here as an example of some of what would be needed to implement a date-range constraint.
+# Set a date/time range
+#to_date=\date `"+%Y-%m-%dT%H:%M:%SZ"`
+
+# NOTE: the 'common' controller will construct a slightly different filter,
+#  where a variable date range is specified instead of "match all":{}.
+#  Cannot do that here due to the way the bash shell constructs the json.
+#  If we could, it would look like:
+#            "filter":{
+#                "range": {
+#                   "@timestamp": {
+#                      "from": "2013-03-19T08:43:35Z",
+#                        "to": "2013-03-20:00:43Z"
+#                    }
+#                }
+#            }
+#
+# So - the result set we get here could be much larger 
+#  than the one used for the activity log.
+
+
+#---------------------------------------------------------------------------
+#-- Get the count for each logging severity
+#
+# The -s parameter eliminates the first / header lines:
+#  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+#                                 Dload  Upload   Total   Spent    Left  Speed
+#  (and some numbers)
+#---------------------------------------------------------------------------
+echo
+curl -s -XPOST "$elastic/_search?pretty=true" -d ' {
+    "query":{
+        "filtered":{
+            "query":{
+                "match_all":{}
+            },
+	    "filter":{ 
+	    	"match_all":{}
+            }
+        }
+    },
+    "facets":{
+        "facet_name":{
+            "terms":{
+                "field":"severity",
+                "order":"term",
+                "size":80
+            }
+        }
+    },
+    "size":0
+}' #| grep term | grep -v terms | cut -f4 -d\"
+echo
+echo
+
+# Earlier version, before use of 'filter':
+#curl -XPOST "$elastic/_search?pretty=true" -d ' {
+#    "query" : { "match_all" : { } },
+#    "facets" : {
+#       "myfacet_name" : {
+#          "terms" : {
+#                "field": "severity",
+#                "order": "term",
+#                "size": 20
+#           }
+#       }
+#    },
+#    "size":1
+#}'
+
+

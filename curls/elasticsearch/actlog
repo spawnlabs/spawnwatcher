@@ -1,0 +1,73 @@
+#!/bin/bash
+#----------------------------------------------------------------------------
+#| A search for specific sources and levels  (result set limited to 1)
+
+# -----------------------------------------
+# Setup, common to all scripts here
+# -----------------------------------------
+pushd `dirname $0` > /dev/null
+source usage
+source options; options $*
+result=$?
+popd > /dev/null
+
+if [ "$result" != "0" ]
+then
+  # We did not pass the basic parameter validation.
+  usage
+  exit 1
+fi
+# -----------------------------------------
+
+#---------------------------------------------------------------------------
+# A search for specific hosts, combined with either a
+#   specific severity or severity missing altogether.
+#
+# In the course of this research, have learned that the AND/OR logic
+# is more performant than the 'bool' filter, and that a filter is
+# better for our purposes than a query, since a filter is faster
+# because there is no scoring and caching is automatic.
+# (http://www.elasticsearch.org/guide/reference/query-dsl)
+#---------------------------------------------------------------------------
+echo
+curl -XPOST "$elastic/_search?pretty=true" -d '
+{
+   "filter" : {
+      "and" : [
+         {
+            "terms" : { 
+               "@source_host" : [   
+                  "st1-netman1",
+                  "st1-netman2",
+                  "st1-sbox3",
+                  "st1-sbox2"
+               ] 
+            }
+         },
+         {
+            "or" : [
+               {
+                  "missing" : { 
+                     "field" : "severity",
+	             "existence" : true,
+	             "null_value" : true
+	          }
+
+               },
+               {
+                  "terms" : { 
+                     "severity" : [   
+                        "INFO"
+                     ] 
+                  }
+               }
+            ]    
+         }
+      ]
+
+   },
+   "size" : 1
+}'
+echo
+echo
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+'search_hostname' is an example of a query that searches the 'hostname' field
+for more than one value ('terms' as a list, vs 'term').
+
+
+echo
+echo
+
+#---------------------------------------------------------------------------
+#-- Example of a search for multiple hostnames
+#---------------------------------------------------------------------------
+# Searched for vm0-hiss1 alone, result count was 156.
+# Searched for vm0-mfw1 alone, result count was 15.
+# With both search terms at the same time, result count was 171.
+
+curl -XPOST 'vm0-sfw1:9200/_search?pretty=true' -d ' {
+	"query" : {
+		"terms" : { "hostname" : [ 
+			"vm0-hiss1", 
+			"vm0-mfw1" 
+		] }
+	},
+	"size" : 2
+}'
+
+

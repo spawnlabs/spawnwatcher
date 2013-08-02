@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Testing the /dump endpoint of the spawnd DumpServlet.
+# See the man page for curl, with the -F (submit a Form) flag.
+
+# Requires spawnd to be running / responding.  (can do this with intellij)
+
+
+# Note: the command below 'hopes' that the test file named 'atestfile.txt'
+# has been copied into /tmp with the correct name, for this usage.
+
+# Alternative options -
+#     -H "dump_type:curl_cmd" \
+#     http://api.spawnlabs.com:8080/dump
+
+curl -X POST \
+     -F "file=@/tmp/atestfile.txt" \
+     -H "dump_type:bestDumpEver" \
+     -H "session_id:73cca2b2-f530-40af-8bca-d506da1c550b" \
+     http://api.spawnlabs.com:8080/dump
+
+
+

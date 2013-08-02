@@ -1,0 +1,29 @@
+As an alternative to 'curl', You can get a browser to make the request.
+(but only for a GET, not a POST, PUT or DELETE)
+
+This is useful to get a formatted, interactive (expand/collapse) view of the JSON response, if
+the browser supports it.  Here is an example, showing the URL format to use:
+
+http://vm0-sfw1:9200/_search?pretty=true&q=-d'@<full path>/match_all.json'
+
+The key to it is the '@' symbol, which tells the browser to read the rest of the URL from 
+the local file system.  Of course, replace <full path> with your correct full path.  Do 
+not use shortcuts like '~' because while your command-line interpreter may understand 
+that, the browser will not, and it does not get translated in the process.
+
+The .json file should contain the same body of the request that you would otherwise 'curl' with the '-d' flag.
+
+Note, though, that a size limitation inside the json is ignored.  You can put the size limitation outside of
+the -d json and it will work.
+Ex:  http://vm0-sfw1:9200/_search?pretty=true&q=-d'@<full path>/match_all.json'&size=2
+
+!!!!!!!!!!!!!!!
+
+But even easier - run the curl command and redirect the output to a file, then point your browser to that.
+In that case, you could redirect many different curls but always redirect to the same file name, then see the various
+ different results just by reloading the browser page.
+
+ex:  sources > afile.json
+in browser:  file://~/afile.json
+
+

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#| Returns a list of the current indexes (and their mappings).
+# This is just a subset of cluster state.
+# The more indices that exist, the longer this report will get.
+
+# -----------------------------------------
+# Setup, common to all scripts here
+# -----------------------------------------
+pushd `dirname $0` > /dev/null
+source usage
+source options; options $*
+result=$?
+popd > /dev/null
+
+if [ "$result" != "0" ]
+then
+  # We did not pass the basic parameter validation.
+  usage
+  exit 1
+fi
+# -----------------------------------------
+
+echo
+curl -s -XGET "$elastic/_mapping?pretty=true"
+echo
+echo
+

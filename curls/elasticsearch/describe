@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#  Display the description line from all other scripts here.
+
+pushd `dirname $0` > /dev/null
+
+echo
+for file in `ls *`
+do
+  desc=`grep "^#| " $file | cut -d'|' -f2`
+  if [[ ! -z $desc ]]; then
+    echo -e "$file:\t$desc"
+  fi
+done
+
+popd > /dev/null
+echo

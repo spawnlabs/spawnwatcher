@@ -1,0 +1,10 @@
+'set_template' was used to apply a template with the hostname 'not_analyzed' mapping,
+so that new indexes created by logstash will automatically have the desired
+mapping.  Initially, the errors reported when I tried to change the mapping made me 
+believe that it was not possible to change a field that had already been established, 
+so I tried the 'multi' field approach that left 'hostname' as it was originally 
+defined but added a 'not_analyzed' variation aliased to 'na_hostname', and it worked.  
+Later, discovered that the original field could be changed after all; the earlier 
+failure was probably just due to bad syntax.
+
+
