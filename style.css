@@ -2,11 +2,13 @@ a:visited{ color: blue; }
 
 #watcher_pic {
     position: absolute;
-    top: 0px;
+    top: 0;
+    left: 0;
     z-index: -1;
 }
 
 #after_image {
+    clear: both;
     min-height: 100px;
 }
 

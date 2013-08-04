@@ -17,8 +17,9 @@ site as opposed to seeing it as a file, if the distinction matters to you.  Also
 good and quick visual indication of whether or not that site and your repo are in sync.
 
 Hallmonitor has a chef-installed apache2 server.
-To serve out the index.html file directly from its spawnwatcher repository, changes were made
-to:  /etc/apache2/sites-enabled/default and the apache2 service was restarted.
+To serve out the index.html file directly from its spawnwatcher repository,
+/etc/apache2/sites-available/default was copied to /etc/apache2/sites-enabled/default,
+changes were made and the apache2 service was restarted.
 
 A copy of the final 'default' file is at the top level of this repo.
 
