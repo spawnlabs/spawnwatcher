@@ -1,71 +1,101 @@
 <html>
-    <head>
-        <title>SpawnWatcher Sites</title>
-        <LINK href="style.css" rel="stylesheet" type="text/css">
+    <title>Spawn Sites</title>
+    <LINK href="style.css" rel="stylesheet" type="text/css">
     <body>
         <!-- Used a table in some of the items below, to achieve correct vertical alignment -->
 
-        <h1 class="fl">SpawnWatcher Sites
-            <span style="font-size: 16px;">
-                <span>(</span>
-                <a href="https://confluence.spawnlabs.com/pages/viewpage.action?pageId=10944820">
-                    wiki
-                </a>
-                <span>)</span>
-            </span>
+        <h1 class="fl">Spawn Labs Web Sites  </h1>
 
-        </h1>
         <img id="watcher_pic" src="kilroy.jpg"/>
         <div id="after_image"></div>
 
-        <table>
-            <tr>
-                <td>
-                    <h2>
-                        <a class="fl" href="http://hallmonitor">
-                            Hallmonitor
-                        </a>
-                    </h2>
-                </td>
-                <td style="min-width: 10px;"></td>
-                <td>
-                    <span style="font-size: 16px;">(this host)</span>
-                </td>
-            </tr>
-        </table>
-
-        <ul style="margin-top: 0; padding-top: 0;">
+        <h2 style="margin-bottom: 0; padding-bottom: 0;">
+            <a href="http://hallmonitor">
+                Hallmonitor
+            </a>
+        </h2>
+        <ul style="margin-top: 4px; padding-top: 0;">
             <li><a href="http://hallmonitor:9000/icinga">icinga (icingaadmin/spawn123)</a></li>
             <li><a href="http://hallmonitor:9000/icinga-web">icinga-web (root/password)</a></li>
         </ul>
         <div></div>
 
+        <!-- Staging -->
         <h2 style="margin-bottom: 0; padding-bottom: 0;">Staging</h2>
-        <ul style="margin-top: 0; padding-top: 0;">
-            <li><a href="http://manage.staging.spawnlabs.com/manage">manage-web (admin/spawn123)</a></li>
-            <li><a href=" http://manage.staging.spawnlabs.com:5601">kibana (a log viewer)</a></li>
+        <ul style="margin-top: 4px; padding-top: 0;">
             <li><a href="http://player.staging.spawnlabs.com/">Player Web</a></li>
-            <li><a href="http://manage.staging.spawnlabs.com:15672/#/">rabbitmq dashboard (guest/guest)</a></li>
-            <li><a href="http://manage.staging.spawnlabs.com:9200/_search">elasticsearch (json results)</a></li>
+            <ul>
+                <li><a href="http://manage.staging.spawnlabs.com:8080/games">spawnd /games</a>
+                    <span>(raw results)</span>
+                </li>
+                <li><a href="http://api.staging.spawnlabs.com">clownshoes</a>&nbsp;</li>
+            </ul>
+            <li><a href="http://manage.staging.spawnlabs.com/manage">Manage-Web</a></li>
+            <li><a href=" http://manage.staging.spawnlabs.com:5601">Kibana</a>
+                <span>(log viewer)</span>
+            </li>
+            <li><a href="http://manage.staging.spawnlabs.com:15672/#/">RabbitMQ dashboard</a>
+                <span>(guest/guest)</span>
+            </li>
+            <li><a href="http://manage.staging.spawnlabs.com:9200/_search">elasticsearch</a>
+                <span>(json results)</span>
+            </li>
+            <li><a href="ssh://spawnadmin@st1-sfw1">st1-sfw1</a>
+                <span>(ssh as spawnadmin)</span>
+            </li>
+            <li><a href="ssh://spawnadmin@st1-sbox1">st1-sbox1</a>
+                <span>(ssh as spawnadmin)</span>
+            </li>
+            <li><a href="ssh://spawnadmin@st1-netman1">st1-netman1</a>
+                <span>(ssh as spawnadmin)</span>
+            </li>
+            <!-- Not currently working; probably will not come back ... - ->
             <li><a href="http://manage.staging.spawnlabs.com:8888">graphite</a></li>
+            <!-- -->
         </ul>
 
+        <h3>
+            <a class="fl" href="http://spawn-goose.dev.spawnlabs.com/">
+                SuperGoose II - Sensors
+            </a>
+        </h3>
+        <span style="min-width: 10px; visibility: hidden;">X</span>
+        <span style="font-size: 16px;">(Server Room Temp Monitor)</span>
 
-        <table>
-            <tr>
-                <td>
-                    <h2>
-                        <a class="fl" href="http://spawn-goose.dev.spawnlabs.com/">
-                            SuperGoose II - Sensors
-                        </a>
-                    </h2>
-                </td>
-                <td style="min-width: 10px;"></td>
-                <td>
-                    <span style="font-size: 16px;">(Server Room Temp Monitor)</span>
-                </td>
-            </tr>
-        </table>
+        <h3>
+            <a href="http://www.spawnlabs.com/">Spawn Labs </a>
+            <span style="margin-left: 10px; font-size: 16px; font-weight: normal;">
+                (spawnlabs.com)
+            </span>
+        </h3>
+
+        <h3>
+            <a class="fl" href="https://manage.opscode.com/login">
+                Hosted Chef
+            </a>
+            <span style="margin-left: 10px; font-size: 16px; font-weight: normal;">
+                (individual accounts here)
+            </span>
+        </h3>
+
+        <h3>
+            <a href="http://hatchery.spawnlabs.com:8081/artifactory/webapp/home.html">Artifactory</a>
+            <span style="margin-left: 10px; font-size: 16px; font-weight: normal;">
+                (builder/builder)
+            </span>
+        </h3>
+
+        <h3>
+            <a href="https://confluence.spawnlabs.com/display/Cloud/Chassis+Lookup+Table">Chassis List</a>
+        </h3>
+
+        <h3>
+            <a href="https://confluence.spawnlabs.com/pages/viewpage.action?pageId=10944820">SpawnWatcher</a>
+            <span style="margin-left: 10px; font-size: 16px; font-weight: normal;">
+                (wiki)
+            </span>
+        </h3>
+
 
     </body>
 </html>

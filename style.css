@@ -2,17 +2,24 @@ a:visited{ color: blue; }
 
 #watcher_pic {
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 0;
     z-index: -1;
 }
 
 #after_image {
+    margin: 0;
+    padding: 0;
     clear: both;
     min-height: 100px;
+    position: relative;
+    top: 0;
+    line-height: 0;
 }
 
 .fl {
+    margin: 0;
+    padding: 0;
     float: left;
 }
 

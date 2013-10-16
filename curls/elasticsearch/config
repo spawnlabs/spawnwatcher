@@ -17,7 +17,7 @@
 
 config()
 {
-  ehost="st1-elasticsearch"
+  ehost="st1-netman1"
   eport="9200"
   #tokeep=100
 }
